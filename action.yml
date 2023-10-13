@@ -15,7 +15,7 @@ runs:
     using: "composite"
     steps:
       - name: Install Step CLI (Linux)
-        id: install-step-cli
+        id: install-step-cli-linux
         if: runner.os == 'Linux'
         shell: bash
         run: |
@@ -29,7 +29,7 @@ runs:
             | tar zvxf - --strip-components=2 -C /usr/local/bin step_${STEP_CLI_VERSION:1}/bin/step && chmod +x /usr/local/bin/step"
 
       - name: Install Step CLI (macOS)
-        id: install-step-cli
+        id: install-step-cli-macos
         if: runner.os == 'macOS'
         shell: bash
         run: |
