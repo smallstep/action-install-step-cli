@@ -25,8 +25,9 @@ runs:
           else
             export STEP_CLI_VERSION=${{ inputs.step-cli-version }}
           fi
-            sudo -E bash -c "curl -L https://github.com/smallstep/cli/releases/download/${STEP_CLI_VERSION}/step_linux_${STEP_CLI_VERSION:1}_${ARCH}.tar.gz \\
-            | tar zvxf - --strip-components=2 -C /usr/local/bin step_${STEP_CLI_VERSION:1}/bin/step && chmod +x /usr/local/bin/step"
+          echo "Installing version ${STEP_CLI_VERSION} of step CLI."
+          sudo -E bash -c "curl -L https://github.com/smallstep/cli/releases/download/${STEP_CLI_VERSION}/step_linux_${STEP_CLI_VERSION:1}_${ARCH}.tar.gz \\
+          | tar zvxf - --strip-components=2 -C /usr/local/bin step_${STEP_CLI_VERSION:1}/bin/step && chmod +x /usr/local/bin/step"
 
       - name: Install Step CLI (macOS)
         id: install-step-cli-macos
