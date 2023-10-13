@@ -1,0 +1,36 @@
+# SPDX-License-Identifier: MIT
+#
+# Copyright (c) 2023 Smallstep Labs, Inc <techadmin@smallstep.com> All Rights Reserved.
+
+name: "action-install-step-cli"
+description: "Installs step CLI so it can be used by your GitHub Action"
+branding:
+  icon: "terminal"
+  color: "red"
+inputs:
+  step-cli-version:
+    description: "The version of step CLI to use"
+
+runs:
+    using: "composite"
+    steps:
+      - name: Install Step CLI (Linux)
+        id: install-step-cli
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          export ARCH=$(arch|sed -e 's/x86_64/amd64/g' -e 's/aarch64/arm64/g'
+          if [ -n "${{ inputs.step-cli-version }}" ]; then
+            export STEP_CLI_VERSION=$(curl -sL https://api.github.com/repos/smallstep/cli/releases/latest | jq -r .tag_name)
+          else
+            export STEP_CLI_VERSION=${{ inputs.step-cli-version }}
+          fi
+            sudo -E bash -c "curl -sL https://github.com/smallstep/cli/releases/download/${STEP_CLI_VERSION}/step_linux_${STEP_CLI_VERSION:1}_${ARCH}.tar.gz \\
+            | tar zvxf - --strip-components=2 -C /usr/local/bin step_${STEP_CLI_VERSION:1}/bin/step && chmod +x /usr/local/bin/step"
+
+      - name: Install Step CLI (macOS)
+        id: install-step-cli
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          brew install step

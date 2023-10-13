@@ -1,0 +1,27 @@
+name: install-step-cli
+
+on:
+  push:
+    tags-ignore:
+    - 'v*'
+    branches:
+    - "main"
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install the latest version
+        uses: smallstep/action-install-step-cli@main
+
+      - name: Print the latest version of step CLI
+        run: step version
+
+      - name: Install 0.24.4 version
+        uses: smallstep/action-install-step-cli@main
+        with:
+          step-cli-version: 0.24.4
+
+      - name: Print the 0.24.4 version of step CLI
+        run: step version
